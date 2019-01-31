@@ -13,6 +13,7 @@ const fooWorld = {
   rooms: "foo-rooms",
   monsters: "foo-monsters",
   items: "foo-items",
+  combinations: "foo-combinations",
 }
 
 describe("worldBuilder duck > StateWorldEditor", () => {
@@ -43,6 +44,7 @@ describe("worldBuilder duck > StateWorldEditor", () => {
     expect(wrapper.text()).toMatch(fooWorld.rooms)
     expect(wrapper.text()).toMatch(fooWorld.monsters)
     expect(wrapper.text()).toMatch(fooWorld.items)
+    expect(wrapper.text()).toMatch(fooWorld.combinations)
   })
 
   test("changes in editors are stored", () => {
@@ -53,15 +55,22 @@ describe("worldBuilder duck > StateWorldEditor", () => {
       .find({ value: fooWorld.monsters })
       .find("textarea")
     const itemsEditor = wrapper.find({ value: fooWorld.items }).find("textarea")
+    const combinationsEditor = wrapper
+      .find({ value: fooWorld.combinations })
+      .find("textarea")
 
     roomsEditor.simulate("change", { target: { value: "new-rooms" } })
     monstersEditor.simulate("change", { target: { value: "new-monsters" } })
     itemsEditor.simulate("change", { target: { value: "new-items" } })
+    combinationsEditor.simulate("change", {
+      target: { value: "new-combinations" },
+    })
 
     expect(getWorld(getState())).toMatchObject({
       rooms: "new-rooms",
       monsters: "new-monsters",
       items: "new-items",
+      combinations: "new-combinations",
     })
   })
 
