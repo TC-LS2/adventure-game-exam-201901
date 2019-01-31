@@ -10,6 +10,7 @@ class CombineView extends Component {
   render() {
     return (
       <div>
+        Level {this.props.combinationPlayerLevel}.
         <input name="textarea" onChange={this.onChange} />{" "}
         <PostCommandButton
           username={this.props.username}

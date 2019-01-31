@@ -21,9 +21,11 @@ public class CombinationsWorldParser implements WorldParser {
 
         while (parser.hasNext()) {
             var result = parser.readWord();
+            var levelRequired = parser.skipChar(':').readInt();
+            var levelUpgrade = parser.skipSpaces().readInt();
             var ingredients = parser.skipChar(':').skipSpaces().readLine();
 
-            var combination = new Combination(ingredients, result);
+            var combination = new Combination(ingredients, result, levelRequired, levelUpgrade);
             combinationRepository.save(combination);
         }
     }

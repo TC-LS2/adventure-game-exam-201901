@@ -25,7 +25,9 @@ export default {
       "stick: weapon 1\n" +
       "rock: weapon 1\n" +
       "onion: food 1\n",
-    combinations: "yakitori: chicken,stick\n",
+    combinations:
+      "yakitori:1 2: chicken,stick\n" +
+      "nanaya:3 3: yakitori\n",
   },
   map:
     "+-------+      +------+      \n" +
@@ -47,20 +49,22 @@ export default {
 
 You can create new items from items that you have in your bag. Just try it:
 
-    > look
+    > look 
     Kitchen
     A kitchen with some food.
     There is the chicken food.
     Exits: north, east.
     Player has 16 life points.
     There is: kirito.
-    > get
+    Combination player level: 1.
+    > get 
     Kitchen
     A kitchen with some food.
     Exits: north, east.
     Player has 16 life points.
     There is: kirito.
     You have: chicken(food).
+    Combination player level: 1.
     > move east
     Garden
     Nice garden with nice plants
@@ -69,7 +73,8 @@ You can create new items from items that you have in your bag. Just try it:
     Player has 16 life points.
     There is: kirito.
     You have: chicken(food).
-    > get
+    Combination player level: 1.
+    > get 
     Garden
     Nice garden with nice plants
     Exits: north, west.
@@ -77,6 +82,7 @@ You can create new items from items that you have in your bag. Just try it:
     Player has 16 life points.
     There is: kirito.
     You have: chicken(food).
+    Combination player level: 1.
     > move north
     River
     Nice river with nice fishes
@@ -86,7 +92,8 @@ You can create new items from items that you have in your bag. Just try it:
     Player has 16 life points.
     There is: kirito.
     You have: chicken(food).
-    > get
+    Combination player level: 1.
+    > get 
     River
     Nice river with nice fishes
     Exits: south, west.
@@ -94,6 +101,7 @@ You can create new items from items that you have in your bag. Just try it:
     Player has 16 life points.
     There is: kirito.
     You have: chicken(food), stick(weapon).
+    Combination player level: 1.
     > combine chicken stick
     River
     Nice river with nice fishes
@@ -102,7 +110,9 @@ You can create new items from items that you have in your bag. Just try it:
     Player has 16 life points.
     There is: kirito.
     You have: yakitori(food).
+    Combination player level: 2.
     > █
+
 
 ### Not everything combines
 
@@ -117,7 +127,8 @@ You have to guess what you can do. Not everything can be combined to obtain some
     Player has 16 life points.
     There is: kirito.
     You have: yakitori(food).
-    > get
+    Combination player level: 2.
+    > get 
     Closet
     Large food store
     Exits: south, east.
@@ -125,9 +136,11 @@ You have to guess what you can do. Not everything can be combined to obtain some
     Player has 16 life points.
     There is: kirito.
     You have: yakitori(food), onion(food).
+    Combination player level: 2.
     > combine yakitori onion
     Ops, there is no combination.
     > █
+
 
 ### You must have the ingredients
 
@@ -136,6 +149,14 @@ No ingredients? No new item. Sorry.
     > combine chicken stick
     Ops, this item is not in the bag.
     > █
+
+### You may have insuficient level
+
+Some combinations increases your level. Others don't. 
+But there are some combinations more complex than others tha you cannot do.
+
+    > combine yakitori
+    Ops, your level is too low.
 
     `}
     />

@@ -12,9 +12,15 @@ public class Combination {
 
     private String result;
 
-    public Combination(String ingredients, String result) {
+    private int levelRequired;
+
+    private int levelUpgrade;
+
+    public Combination(String ingredients, String result, int levelRequired, int levelUpgrade) {
         this.ingredients = ingredients;
         this.result = result;
+        this.levelRequired = levelRequired;
+        this.levelUpgrade = levelUpgrade;
     }
 
     public String getResult() {
@@ -35,6 +41,14 @@ public class Combination {
         }
 
         return true;
+    }
+
+    public int getLevelRequired() {
+        return levelRequired;
+    }
+
+    public int getLevelUpgrade() {
+        return levelUpgrade;
     }
 
     Combination() {}

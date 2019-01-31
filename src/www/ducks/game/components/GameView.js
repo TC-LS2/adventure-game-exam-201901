@@ -9,7 +9,9 @@ import ExitsButtons from "./ExitsButtons"
 import RoomItemsButtons from "./RoomItemsButtons"
 import RoomMonstersButtons from "./RoomMonstersButtons"
 
-const GameView = ({ game: { player, room, roomPlayers, hint, bag } }) => {
+const GameView = ({
+  game: { player, room, roomPlayers, combinationPlayerLevel, bag },
+}) => {
   const { username } = player
   return (
     <div>
@@ -29,7 +31,10 @@ const GameView = ({ game: { player, room, roomPlayers, hint, bag } }) => {
         <RoomMonstersButtons username={username} room={room} />
       </div>
       <div>
-        <CombineView username={username} bag={bag} />
+        <CombineView
+          username={username}
+          combinationPlayerLevel={combinationPlayerLevel}
+        />
       </div>
     </div>
   )

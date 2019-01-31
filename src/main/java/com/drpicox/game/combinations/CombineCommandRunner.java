@@ -25,6 +25,7 @@ public class CombineCommandRunner implements Command {
         var ingredients = request.getArguments();
         var player = playerController.getPlayer(request.getUsername());
         var bag = bagController.getBag(player);
+        var level = combinationsController.getPlayerLevel(request.getUsername()).getLevel();
 
         for (var ingredient: ingredients) {
             var item = bag.getItem(ingredient);
@@ -36,6 +37,9 @@ public class CombineCommandRunner implements Command {
         if (combination == null) {
             throw new IllegalCommandException("no-combination", "There is no combination.");
         }
+        if (combination.getLevelRequired() > level) {
+            throw new IllegalCommandException("no-level", "Your level is too low.");
+        }
 
         for (var ingredient: ingredients) {
             bagController.dropItem(player, ingredient);
@@ -43,6 +47,8 @@ public class CombineCommandRunner implements Command {
 
         var item = itemController.get(combination.getResult());
         bagController.takeItem(player, item);
+
+        combinationsController.upgradePlayerLevelTo(request.getUsername(), combination.getLevelUpgrade());
     }
 
 }

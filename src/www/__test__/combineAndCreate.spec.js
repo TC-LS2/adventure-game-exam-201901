@@ -10,6 +10,7 @@ import { POST_COMMAND } from "../ducks/game/actions/postCommand"
 
 const combineGame = {
   ...fooGame,
+  combinationPlayerLevel: 333,
 }
 
 let wrapper
@@ -28,6 +29,10 @@ beforeEach(() => {
   dispatch(setGame(combineGame))
   dispatch(push("/game"))
   wrapper.update()
+})
+
+test("it shows combinationPlayerLevel", () => {
+  expect(wrapper.text()).toMatch("333")
 })
 
 test("allows to write new combination and send it", () => {

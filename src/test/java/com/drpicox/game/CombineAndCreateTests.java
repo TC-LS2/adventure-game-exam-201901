@@ -53,6 +53,14 @@ public class CombineAndCreateTests {
 
     public static void decorateMustache(MustacheGameStringifier mustache) {
         KeepYourThingsTests.decorateMustache(mustache);
+
+        mustache.setBody("" +
+                "{{#room}}{{>room}}{{/room}}" +
+                "{{#player}}{{>player}}{{/player}}" +
+                "{{#roomPlayers}}{{>roomPlayers}}{{/roomPlayers}}" +
+                "{{#bag}}{{#items}}{{>bag}}{{/items}}{{/bag}}" +
+                "Combination player level: {{combinationPlayerLevel}}.");
+        ;
     }
 
     public static WorldBuilder buildWorld() {
@@ -78,7 +86,8 @@ public class CombineAndCreateTests {
                 .description("Large food store")
                 .item("onion", "food", 1)
 
-                .line("combinations", "yakitori: chicken,stick")
+                .line("combinations", "yakitori:1 2: chicken,stick")
+                .line("combinations", "nanaya:3 3: yakitori")
                 ;
     }
 
@@ -105,7 +114,8 @@ public class CombineAndCreateTests {
                 "rock: weapon 1\n" +
                 "onion: food 1\n" +
                 "== combinations:\n" +
-                "yakitori: chicken,stick\n"));
+                "yakitori:1 2: chicken,stick\n" +
+                "nanaya:3 3: yakitori\n"));
     }
 
     @Test
@@ -135,14 +145,16 @@ public class CombineAndCreateTests {
                 "There is the chicken food.\n" +
                 "Exits: north, east.\n" +
                 "Player has 16 life points.\n" +
-                "There is: kirito.");
+                "There is: kirito.\n" +
+                "Combination player level: 1.");
         helper.runCommand("kirito", "get");
         helper.assertResult("Kitchen\n" +
                 "A kitchen with some food.\n" +
                 "Exits: north, east.\n" +
                 "Player has 16 life points.\n" +
                 "There is: kirito.\n" +
-                "You have: chicken(food).");
+                "You have: chicken(food).\n" +
+                "Combination player level: 1.");
 
         helper.runCommand("kirito", "move", "east");
         helper.assertResult("Garden\n" +
@@ -151,7 +163,8 @@ public class CombineAndCreateTests {
                 "Exits: north, west.\n" +
                 "Player has 16 life points.\n" +
                 "There is: kirito.\n" +
-                "You have: chicken(food).");
+                "You have: chicken(food).\n" +
+                "Combination player level: 1.");
         helper.runCommand("kirito", "get");
         helper.assertResult("Garden\n" +
                 "Nice garden with nice plants\n" +
@@ -159,7 +172,8 @@ public class CombineAndCreateTests {
                 "Player has the stick weapon.\n" +
                 "Player has 16 life points.\n" +
                 "There is: kirito.\n" +
-                "You have: chicken(food).");
+                "You have: chicken(food).\n" +
+                "Combination player level: 1.");
 
         helper.runCommand("kirito", "move", "north");
         helper.assertResult("River\n" +
@@ -169,7 +183,8 @@ public class CombineAndCreateTests {
                 "Player has the stick weapon.\n" +
                 "Player has 16 life points.\n" +
                 "There is: kirito.\n" +
-                "You have: chicken(food).");
+                "You have: chicken(food).\n" +
+                "Combination player level: 1.");
         helper.runCommand("kirito", "get");
         helper.assertResult("River\n" +
                 "Nice river with nice fishes\n" +
@@ -177,7 +192,8 @@ public class CombineAndCreateTests {
                 "Player has the rock weapon.\n" +
                 "Player has 16 life points.\n" +
                 "There is: kirito.\n" +
-                "You have: chicken(food), stick(weapon).");
+                "You have: chicken(food), stick(weapon).\n" +
+                "Combination player level: 1.");
 
         helper.runCommand("kirito", "combine", "chicken", "stick");
         helper.assertResult("River\n" +
@@ -186,7 +202,8 @@ public class CombineAndCreateTests {
                 "Player has the rock weapon.\n" +
                 "Player has 16 life points.\n" +
                 "There is: kirito.\n" +
-                "You have: yakitori(food).");
+                "You have: yakitori(food).\n" +
+                "Combination player level: 2.");
     }
 
     @Test
@@ -208,7 +225,8 @@ public class CombineAndCreateTests {
                 "Player has the rock weapon.\n" +
                 "Player has 16 life points.\n" +
                 "There is: kirito.\n" +
-                "You have: yakitori(food).");
+                "You have: yakitori(food).\n" +
+                "Combination player level: 2.");
         helper.runCommand("kirito", "get");
         helper.assertResult("Closet\n" +
                 "Large food store\n" +
@@ -216,7 +234,8 @@ public class CombineAndCreateTests {
                 "Player has the rock weapon.\n" +
                 "Player has 16 life points.\n" +
                 "There is: kirito.\n" +
-                "You have: yakitori(food), onion(food).");
+                "You have: yakitori(food), onion(food).\n" +
+                "Combination player level: 2.");
 
         helper.runCommand("kirito", "combine", "yakitori", "onion")
                 .andExpect(status().isBadRequest())
@@ -240,5 +259,24 @@ public class CombineAndCreateTests {
         helper.runCommand("kirito", "combine", "chicken", "stick")
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code", is("no-item")));
+    }
+
+    @Test
+    public void you_may_have_insuficient_level() throws Exception {
+        helper.putWorld(buildWorld());
+
+        helper.runCommand("kirito", "get");
+        helper.runCommand("kirito", "move", "east");
+        helper.runCommand("kirito", "get");
+        helper.runCommand("kirito", "move", "north");
+        helper.runCommand("kirito", "get");
+        helper.runCommand("kirito", "combine", "chicken", "stick");
+
+        helper.runCommand("kirito", "move", "west");
+        helper.runCommand("kirito", "get");
+
+        helper.runCommand("kirito", "combine", "yakitori")
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code", is("no-level")));
     }
 }
