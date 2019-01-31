@@ -1,6 +1,7 @@
 package com.drpicox.game;
 
 import com.drpicox.game.bags.BagRepository;
+import com.drpicox.game.combinations.CombinationRepository;
 import com.drpicox.game.command.CommandRequest;
 import com.drpicox.game.items.ItemRepository;
 import com.drpicox.game.mocks.TimerTaskRunnerMock;
@@ -54,9 +55,10 @@ public class TestHelper {
     private RoomRepository roomRepository;
     private BagRepository bagRepository;
     private PlayerRepository playerRepository;
+    private CombinationRepository combinationRepository;
     private TimerTaskRunnerMock timerTaskRunnerMock;
 
-    public TestHelper(MockMvc mockMvc, ItemRepository itemRepository, MonsterRepository monsterRepository, RoomRepository roomRepository, PlayerRepository playerRepository, BagRepository bagRepository, TimerTaskRunnerMock timerTaskRunnerMock) {
+    public TestHelper(MockMvc mockMvc, ItemRepository itemRepository, MonsterRepository monsterRepository, RoomRepository roomRepository, PlayerRepository playerRepository, BagRepository bagRepository, TimerTaskRunnerMock timerTaskRunnerMock, CombinationRepository combinationRepository) {
         this.mockMvc = mockMvc;
         this.itemRepository = itemRepository;
         this.monsterRepository = monsterRepository;
@@ -64,6 +66,7 @@ public class TestHelper {
         this.playerRepository = playerRepository;
         this.bagRepository = bagRepository;
         this.timerTaskRunnerMock = timerTaskRunnerMock;
+        this.combinationRepository = combinationRepository;
     }
 
     public void cleanup() {
@@ -72,6 +75,7 @@ public class TestHelper {
         else
             System.out.println("> █\n= cleanup =====================================");
 
+        combinationRepository.deleteAll();
         bagRepository.deleteAll();
         playerRepository.deleteAll();
         roomRepository.deleteAll();

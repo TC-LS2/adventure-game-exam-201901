@@ -61,7 +61,7 @@ public class CombineAndCreateTests {
 
                 .name("Kitchen")
                 .description("A kitchen with some food.")
-                .item("chiken", "food", 1)
+                .item("chicken", "food", 1)
 
                 .east()
                 .name("Garden")
@@ -86,7 +86,7 @@ public class CombineAndCreateTests {
     public void world_text_snapshot() {
         assertThat(buildWorld().build(), is("" +
                 "== rooms:\n" +
-                "0 0:Kitchen:0 -1 0 -1:chiken\n" +
+                "0 0:Kitchen:0 -1 0 -1:chicken\n" +
                 "A kitchen with some food.\n" +
                 "::::\n" +
                 "0 1:Garden:0 -1 -1 0:stick\n" +
@@ -100,7 +100,7 @@ public class CombineAndCreateTests {
                 "::::\n" +
                 "== items:\n" +
                 "yakitori: food 4\n" +
-                "chiken: food 1\n" +
+                "chicken: food 1\n" +
                 "stick: weapon 1\n" +
                 "rock: weapon 1\n" +
                 "onion: food 1\n" +
@@ -132,7 +132,7 @@ public class CombineAndCreateTests {
         helper.runCommand("kirito", "look");
         helper.assertResult("Kitchen\n" +
                 "A kitchen with some food.\n" +
-                "There is the chiken food.\n" +
+                "There is the chicken food.\n" +
                 "Exits: north, east.\n" +
                 "Player has 16 life points.\n" +
                 "There is: kirito.");
@@ -142,7 +142,7 @@ public class CombineAndCreateTests {
                 "Exits: north, east.\n" +
                 "Player has 16 life points.\n" +
                 "There is: kirito.\n" +
-                "You have: chiken(food).");
+                "You have: chicken(food).");
 
         helper.runCommand("kirito", "move", "east");
         helper.assertResult("Garden\n" +
@@ -151,7 +151,7 @@ public class CombineAndCreateTests {
                 "Exits: north, west.\n" +
                 "Player has 16 life points.\n" +
                 "There is: kirito.\n" +
-                "You have: chiken(food).");
+                "You have: chicken(food).");
         helper.runCommand("kirito", "get");
         helper.assertResult("Garden\n" +
                 "Nice garden with nice plants\n" +
@@ -159,7 +159,7 @@ public class CombineAndCreateTests {
                 "Player has the stick weapon.\n" +
                 "Player has 16 life points.\n" +
                 "There is: kirito.\n" +
-                "You have: chiken(food).");
+                "You have: chicken(food).");
 
         helper.runCommand("kirito", "move", "north");
         helper.assertResult("River\n" +
@@ -169,7 +169,7 @@ public class CombineAndCreateTests {
                 "Player has the stick weapon.\n" +
                 "Player has 16 life points.\n" +
                 "There is: kirito.\n" +
-                "You have: chiken(food).");
+                "You have: chicken(food).");
         helper.runCommand("kirito", "get");
         helper.assertResult("River\n" +
                 "Nice river with nice fishes\n" +
@@ -177,7 +177,7 @@ public class CombineAndCreateTests {
                 "Player has the rock weapon.\n" +
                 "Player has 16 life points.\n" +
                 "There is: kirito.\n" +
-                "You have: chiken(food), stick(weapon).");
+                "You have: chicken(food), stick(weapon).");
 
         helper.runCommand("kirito", "combine", "chicken", "stick");
         helper.assertResult("River\n" +
@@ -204,15 +204,15 @@ public class CombineAndCreateTests {
         helper.assertResult("Closet\n" +
                 "Large food store\n" +
                 "There is the onion food.\n" +
-                "Exits: south, west.\n" +
-                "Player has the stick weapon.\n" +
+                "Exits: south, east.\n" +
+                "Player has the rock weapon.\n" +
                 "Player has 16 life points.\n" +
                 "There is: kirito.\n" +
                 "You have: yakitori(food).");
         helper.runCommand("kirito", "get");
         helper.assertResult("Closet\n" +
                 "Large food store\n" +
-                "Exits: south, west.\n" +
+                "Exits: south, east.\n" +
                 "Player has the rock weapon.\n" +
                 "Player has 16 life points.\n" +
                 "There is: kirito.\n" +
@@ -220,7 +220,7 @@ public class CombineAndCreateTests {
 
         helper.runCommand("kirito", "combine", "yakitori", "onion")
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.code", is("no-combine")));
+                .andExpect(jsonPath("$.code", is("no-combination")));
     }
 
     @Test

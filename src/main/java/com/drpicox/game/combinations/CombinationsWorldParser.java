@@ -8,16 +8,23 @@ import com.drpicox.game.world.WorldParserComponent;
 @WorldParserComponent
 public class CombinationsWorldParser implements WorldParser {
 
+    private CombinationRepository combinationRepository;
+
+    public CombinationsWorldParser(CombinationRepository combinationRepository) {
+        this.combinationRepository = combinationRepository;
+    }
+
     @Override
     public void parse(World world) {
         var combinations = world.get("combinations");
         var parser = new Parser(combinations);
 
         while (parser.hasNext()) {
-            var name = parser.readWord();
-            var rest = parser.readLine();
+            var result = parser.readWord();
+            var ingredients = parser.skipChar(':').skipSpaces().readLine();
 
-            System.out.println(name + rest);
+            var combination = new Combination(ingredients, result);
+            combinationRepository.save(combination);
         }
     }
 }
