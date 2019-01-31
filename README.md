@@ -157,64 +157,63 @@ i els executa.
 
 - Quin altre _Collector_ ha fet?
 
-________________________________________________
+> CommandCollector
 
 - Qui delega en aquest _Collector_?
 
-________________________________________________
+> CommandRestController
 
 - Quina interfície recull i implementa aquest _Collector_?
 
-________________________________________________
+> Command
 
 - Quines anotacions cal usar pels components que vulguin ser 
   recollits per aquest _Collector_?
 
-________________________________________________
-________________________________________________
-________________________________________________
-________________________________________________
+> @BeforeCommandComponent
+> @CommandComponent
+> @AfterCommandComponent
 
 - Mira el codi del _Collector_. Quin rol satisfà cada una de les anotacions?
 
-________________________________________________
-________________________________________________
-________________________________________________
-________________________________________________
+> @Command son Command que implementen comandes concretes, `var command = getCommand(request)` 
+  i `command.run(request, response)`
+
+> @BeforeCommandComponent son Command a executar abans `runBeforeCommand(request, response)` 
+  del command principal i poden preparar dades 
+
+> @AfterCommandComponent son Command a executar després `runAfterCommand(request, response)` 
+  del command principal i poden decorar la sortida
 
 - Busca els usos de les anotacions. Una de les anotacions porta 
   un paràmetre, ex: `@Anotació("parametre")`.
   Quina anotació és? Que configura el paràmetre?
 
-________________________________________________
-________________________________________________
-________________________________________________
-________________________________________________
+> @CommandComponent("commandName")
+  Configura quin command executa aquest component.
 
 - La majoria de les classes que implementen la interfície 
   d'aquell _Collector_ estan implementades al mateix package. 
   Però n'hi ha unes poques que estan en un altre package. 
   Quin package és? Quines classes son? Que fan cada classe?
 
-________________________________________________
-________________________________________________
-________________________________________________
-________________________________________________
-________________________________________________
-________________________________________________
+> El package és `com.drpicox.game.bags`, i les classes son son:
+
+> EquipCommandRunner: implementa la acció del jugador "equip"
+> GetCommandRunner: implementa la acció del jugador "get"
+> LookBagAfterCommand: decora la resposta d'una acció afegint
+  el contingut de la bossa.
 
 - Mira el package `com.drpicox.game.bags`. 
   Com es relaciona `Bag` amb `com.drpicox.game.players.Player`?
 
-________________________________________________
-________________________________________________
-________________________________________________
+> Amb una foreign key/amb una join:
+  `@OneToOne @PrimaryKeyJoinColumn private Player owner`
 
 - Qui i com fa treballar junts `Bag` i `Player` a l'acció `get`?
 
-________________________________________________
-________________________________________________
-________________________________________________
+> Ho fa la classe GetCommandRunner. Crida a player o a bag 
+  segons dicta la lògica de l'acció.
 
 
 
