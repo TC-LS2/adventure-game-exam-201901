@@ -55,9 +55,9 @@ jdk-10.0.1 i en openjdk-10.0.2.
 
 - Escriu el teu nom, cognoms i DNI a continuació:
 
-Nom: ____________________  
-Cognoms: ________________  
-DNI: ____________________  
+> Nom: David  
+> Cognoms: Rodenas  
+> DNI: 1234567A  
 
 
 ## 2) Explica el refactor (1pt)
