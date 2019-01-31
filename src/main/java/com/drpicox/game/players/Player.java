@@ -107,7 +107,8 @@ public class Player {
             dropped = weapon;
             weapon = (Weapon) item;
         } else if (item instanceof Food) {
-            takeLifePoints(((Food) item).getLifePoints());
+            if (this.lifePoints == MAX_LIFE_POINTS) dropped = item;
+            else takeLifePoints(((Food) item).getLifePoints());
         }
         return dropped;
     }
