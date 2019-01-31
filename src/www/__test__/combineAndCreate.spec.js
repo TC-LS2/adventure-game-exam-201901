@@ -33,7 +33,6 @@ beforeEach(() => {
 test("allows to write new combination and send it", () => {
   wrapper
     .find("input")
-    .find({ name: "combinations" })
     .simulate("change", { target: { value: "chicken,stick" } })
   wrapper
     .find({ command: "combine" })

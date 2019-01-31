@@ -6,10 +6,11 @@ class WorldEditor extends Component {
   onRooms = rooms => this.props.onChange({ rooms })
   onMonsters = monsters => this.props.onChange({ monsters })
   onItems = items => this.props.onChange({ items })
+  onCombinations = combinations => this.props.onChange({ combinations })
   onSave = () => this.props.onSave(this.props.world)
 
   render() {
-    const { rooms, monsters, items } = this.props.world
+    const { rooms, monsters, items, combinations } = this.props.world
 
     return (
       <div>
@@ -19,6 +20,8 @@ class WorldEditor extends Component {
         <Editor value={monsters} onChange={this.onMonsters} />
         <h3>Items</h3>
         <Editor value={items} onChange={this.onItems} />
+        <h3>Combinations</h3>
+        <Editor value={combinations} onChange={this.onCombinations} />
         <br />
         <br />
         <br />
